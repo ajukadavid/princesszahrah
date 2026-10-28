@@ -499,6 +499,59 @@ function WallMap() {
   );
 }
 
+/** Framed portrait hanging on the wall between the flag stripes and the map. */
+function WallPortrait() {
+  const W = 1.5, H = 1.875;
+  const placeholder = usePhotoTexture("#8a6a5c", "Portrait · the Director General");
+  const [photo, setPhoto] = useState<THREE.Texture | null>(null);
+  useEffect(() => {
+    if (!images.wall) return;
+    let alive = true;
+    new THREE.TextureLoader().load(images.wall, (t) => {
+      if (!alive) return;
+      t.colorSpace = THREE.SRGBColorSpace;
+      const img = t.image as { width: number; height: number };
+      const ratio = img.width / img.height / (W / H);
+      if (ratio > 1) {
+        t.repeat.set(1 / ratio, 1);
+        t.offset.set((1 - 1 / ratio) / 2, 0);
+      } else {
+        // keep the top of the image (her face) when cropping a tall photo
+        t.repeat.set(1, ratio);
+        t.offset.set(0, 1 - ratio);
+      }
+      setPhoto(t);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  const tex = photo ?? placeholder;
+  return (
+    <group position={[-1.6, 2.4, -6.88]}>
+      <mesh castShadow receiveShadow position={[0, 0, -0.04]}>
+        <boxGeometry args={[W + 0.36, H + 0.36, 0.08]} />
+        <meshStandardMaterial color="#c9a24a" metalness={0.8} roughness={0.35} />
+      </mesh>
+      {/* cream mount */}
+      <mesh position={[0, 0, 0.001]}>
+        <planeGeometry args={[W + 0.2, H + 0.2]} />
+        <meshStandardMaterial color="#efe6d2" roughness={0.95} />
+      </mesh>
+      <mesh position={[0, 0, 0.004]}>
+        <planeGeometry args={[W, H]} />
+        <meshStandardMaterial map={tex} roughness={0.6} />
+      </mesh>
+      {/* brass plaque */}
+      <mesh position={[0, -H / 2 - 0.3, 0.02]}>
+        <boxGeometry args={[0.7, 0.1, 0.02]} />
+        <meshStandardMaterial color="#b8923f" metalness={0.9} roughness={0.3} />
+      </mesh>
+      <pointLight position={[0, 1.2, 1.4]} intensity={2} distance={4} color="#ffe9c4" />
+    </group>
+  );
+}
+
 function Lamp({ onToggle, hovered, setHovered }: { onToggle: () => void; hovered: string | null; setHovered: (i: string | null) => void }) {
   const light = useRef<THREE.PointLight>(null);
   const bulb = useRef<THREE.MeshStandardMaterial>(null);
@@ -879,6 +932,7 @@ export default function DeskScene({
       </Suspense>
 
       <Room />
+      <WallPortrait />
       <Desk />
       <Lamp onToggle={onToggleEvening} hovered={hovered} setHovered={setHovered} />
       <Dust />

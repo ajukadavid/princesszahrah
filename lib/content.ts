@@ -33,6 +33,8 @@ export const person = {
  *  frame      — the photograph standing on the desk (Chapter V). A rally or
  *               women's-mobilisation photo with people in it. Landscape 4:3.
  *               ≥1200px wide. It is displayed small, so pick a bold composition.
+ *  wall       — the framed portrait hanging on the wall, left of the map.
+ *               Portrait 4:5, ≥1200px tall. Formal or official portrait works best.
  *  rooms[]    — one per entry in `rooms` below (same order). Her in the room:
  *               panel, handshake, podium, delegation. Landscape 16:7-ish crop
  *               works best; ≥1600px wide.
@@ -45,12 +47,14 @@ export const images: {
   portrait: string | null;
   og: string | null;
   frame: string | null;
+  wall: string | null;
   rooms: (string | null)[];
   gallery: string[];
 } = {
   portrait: "/images/portrait.jpg", // seated address, orange & indigo gele
   og: null, // generated card uses the portrait; drop a 1200×630 here to override
   frame: "/images/pebec-works.jpg", // at the lectern, "PEBEC Works!" backdrop
+  wall: "/images/portrait.jpg", // swap for a dedicated official portrait when you have one
   rooms: ["/images/podium-flag.jpg", null, null, null], // London · UNGA · Rabat · Stockholm
   gallery: ["/images/pebec-works.jpg", "/images/statewide-tour.jpg", "/images/portrait.jpg"],
 };
