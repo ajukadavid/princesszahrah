@@ -9,7 +9,7 @@ export const person = {
   titleShort: "Director General · PEBEC",
   location: "Abuja, Nigeria",
   since: "January 2025",
-  email: "office@zahrahaudu.ng",
+  email: "zahrah.mustaphaaudu@pebec.gov.ng",
   pronunciation: "ZAH-rah · moos-TAH-fah · AH-doo",
   /** Other names people search for; feeds <meta keywords> and the JSON-LD alternateName. */
   aka: ["Zahrah Audu", "Zahrah Mustapha Audu", "Princess Zahrah Audu", "Zahrah Mustapha-Audu", "DG PEBEC"],
@@ -55,7 +55,7 @@ export const images: {
   og: null, // generated card uses the portrait; drop a 1200×630 here to override
   frame: "/images/pebec-works.jpg", // at the lectern, "PEBEC Works!" backdrop
   wall: "/images/portrait.jpg", // swap for a dedicated official portrait when you have one
-  rooms: ["/images/podium-flag.jpg", null, null, null], // London · UNGA · Rabat · Stockholm
+  rooms: ["/images/uk-business-forum.jpg", "/images/unga-side-event.jpg"], // London · UNGA
   gallery: ["/images/pebec-works.jpg", "/images/statewide-tour.jpg", "/images/portrait.jpg"],
 };
 
@@ -70,7 +70,7 @@ export const chapters: { id: ChapterId; n: string; name: string; object: string;
   { id: "rooms", n: "IV", name: "The Rooms", object: "The passport", line: "Where the work has taken her." },
   { id: "mobilisation", n: "V", name: "Mobilisation", object: "The photograph", line: "A decade organising women across the North Central." },
   { id: "words", n: "VI", name: "In Her Words", object: "The newspapers", line: "Speeches, interviews and what the press has said." },
-  { id: "contact", n: "VII", name: "Write to the DG", object: "The telephone", line: "Notes are read. Complaints go to ReportGov." },
+  { id: "contact", n: "VII", name: "Write to the DG", object: "The envelope", line: "Notes are read. Complaints go to ReportGov." },
 ];
 
 /* ---------------- I · prologue ---------------- */
@@ -174,11 +174,13 @@ export const record = {
 /* ---------------- IV · rooms ---------------- */
 
 export const rooms = [
-  { title: "UK State Visit", place: "London", date: "2025", line: "Investor roundtables with the UK–Nigeria Enhanced Trade and Investment Partnership." },
-  { title: "UN General Assembly", place: "New York", date: "Sep 2025", line: "Nigeria's business-environment reforms presented on the margins of UNGA 80." },
-  { title: "Africa Investment Forum", place: "Rabat", date: "2025", line: "Subnational electricity markets pitched as Nigeria's next investment frontier." },
-  { title: "Sweden Trade Mission", place: "Stockholm", date: "2026", line: "Nordic investors, Nigerian regulatory reform: the conversation on predictability." },
-];
+  {
+    title: "Nigeria–UK Business Forum",
+    place: "Marlborough House, London",
+    date: "Mar 2026",
+    line: "Organised by PEBEC in collaboration with NACCIMA on the margins of President Bola Ahmed Tinubu’s UK State Visit, the Nigeria–UK Business Forum convened policymakers, investors, business leaders and diaspora representatives at the Commonwealth Secretariat. Discussions focused on Nigeria’s business environment reforms, Made-in-Nigeria enterprises, and opportunities to strengthen bilateral trade and attract investment.",
+  },
+  { title: "UN General Assembly", place: "New York", date: "Sep 2025", line: "Nigeria's business-environment reforms presented on the margins of UNGA 80." },];
 
 /* ---------------- V · mobilisation ---------------- */
 

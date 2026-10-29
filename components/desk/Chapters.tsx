@@ -173,7 +173,7 @@ export function Rooms() {
               </span>
             </div>
             <p className="mt-2 text-[13px] leading-relaxed text-ink/60">{r.line}</p>
-            <Photo src={images.rooms[i] ?? null} alt={`${r.title}, ${r.place}`} ratio="aspect-[16/7]" note="Photograph · to be added" className="mt-3" />
+            <Photo src={images.rooms[i] ?? null} alt={`${r.title}, ${r.place}`} ratio="aspect-[16/7]" note="Photograph · to be added" className="mt-3 object-top" />
           </li>
         ))}
       </ul>
@@ -315,7 +315,7 @@ export function Contact() {
       </div>
       {sent ? (
         <p data-p className={`serif mt-10 text-xl ${gold}`}>
-          Thank you. Your note is on the desk.
+          Thank you. Your email app should open with the note addressed to her. Press send there.
         </p>
       ) : (
         <form
@@ -323,13 +323,19 @@ export function Contact() {
           className="mt-8 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            const name = String(f.get("name") ?? "");
+            const org = String(f.get("org") ?? "");
+            const subject = `A note for the Director General from ${name}${org ? `, ${org}` : ""}`;
+            const body = `${f.get("note") ?? ""}\n\n${name}${org ? `\n${org}` : ""}`;
+            window.location.href = `mailto:${person.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             setSent(true);
           }}
         >
-          <input required className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Your name" />
-          <input className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Organisation (optional)" />
-          <textarea required rows={4} className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Your note" />
-          <button className="eyebrow rounded-full border border-rose/50 px-5 py-2.5 text-rose hover:bg-rose hover:text-ivory">Leave the note</button>
+          <input required name="name" className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Your name" />
+          <input name="org" className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Organisation (optional)" />
+          <textarea required name="note" rows={4} className="w-full border-b border-ink/15 bg-transparent py-3 text-sm outline-none placeholder:text-ink/35 focus:border-gold" placeholder="Your note" />
+          <button className="eyebrow rounded-full border border-rose/50 px-5 py-2.5 text-rose hover:bg-rose hover:text-ivory">Email the note</button>
         </form>
       )}
       <ul data-p className="mt-10 flex flex-wrap gap-x-5 gap-y-2">

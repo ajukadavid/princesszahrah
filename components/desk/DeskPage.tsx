@@ -148,7 +148,7 @@ export default function DeskPage() {
           <p className="eyebrow text-rose">Office of the Director General · PEBEC</p>
           <h1 className="serif mt-4 max-w-3xl text-4xl leading-[1.05] md:text-6xl">{person.name}</h1>
           <p className="mt-6 max-w-md text-[15px] leading-relaxed text-ink/60">
-            Everything on this desk opens a chapter. The dossier is her story. The kiosk is the mandate. The map keeps score. The telephone reaches her.
+            Everything on this desk opens a chapter. The dossier is her story. The kiosk is the mandate. The map keeps score. The envelope reaches her.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <button onClick={enter} className="eyebrow inline-flex items-center gap-3 rounded-full border border-rose/50 bg-ivory/70 px-6 py-3 text-rose transition hover:bg-rose hover:text-ivory">

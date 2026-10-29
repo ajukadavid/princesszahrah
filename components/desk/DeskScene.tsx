@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { ContactShadows, Environment, Float, Html, Line } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { images, states, type ChapterId } from "@/lib/content";
+import { images, person, states, type ChapterId } from "@/lib/content";
 
 export type Active = ChapterId | null;
 
@@ -323,23 +323,63 @@ function Passport() {
   );
 }
 
-function Telephone() {
+/** A sealed envelope addressed to the DG's email. */
+function Envelope() {
+  const W = 1.0, D = 0.62;
+  const face = useMemo(() => {
+    const w = 1024, h = Math.round((w * D) / W);
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = "#f3eadf";
+    ctx.fillRect(0, 0, w, h);
+    // flap fold lines
+    ctx.strokeStyle = "rgba(120,90,60,0.22)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, 0); ctx.lineTo(w / 2, h * 0.5); ctx.lineTo(w, 0);
+    ctx.stroke();
+    // stamp
+    ctx.fillStyle = "#6f9a80";
+    ctx.fillRect(w - 150, 36, 104, 124);
+    ctx.strokeStyle = "#f3eadf";
+    ctx.setLineDash([6, 6]);
+    ctx.strokeRect(w - 142, 44, 88, 108);
+    ctx.setLineDash([]);
+    ctx.fillStyle = "#1a1612";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "500 30px Geist Mono, ui-monospace, monospace";
+    ctx.fillText("THE DIRECTOR GENERAL · PEBEC", w / 2, h * 0.66);
+    let size = 52;
+    const email = person.email;
+    const fit = () => (ctx.font = `500 ${size}px Fraunces, Georgia, serif`);
+    fit();
+    while (size > 16 && ctx.measureText(email).width > w * 0.86) {
+      size -= 1;
+      fit();
+    }
+    ctx.fillText(email, w / 2, h * 0.8);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    return t;
+  }, []);
   return (
-    <group rotation={[0, -0.5, 0]}>
-      <mesh castShadow receiveShadow position={[0, 0.1, 0]}>
-        <boxGeometry args={[0.8, 0.2, 0.55]} />
-        <meshStandardMaterial color="#f3eadf" roughness={0.35} metalness={0.05} />
+    <group rotation={[0, -0.25, 0]}>
+      <mesh castShadow receiveShadow position={[0, 0.02, 0]}>
+        <boxGeometry args={[W, 0.04, D]} />
+        <meshStandardMaterial color="#ebdfd2" roughness={0.9} />
       </mesh>
-      <mesh castShadow position={[0, 0.3, -0.05]} rotation={[0, 0, Math.PI / 2]}>
-        <capsuleGeometry args={[0.07, 0.62, 6, 12]} />
-        <meshStandardMaterial color="#ebdfd2" roughness={0.3} metalness={0.05} />
+      <mesh position={[0, 0.041, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[W, D]} />
+        <meshStandardMaterial map={face} roughness={0.9} />
       </mesh>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <mesh key={i} position={[-0.18 + (i % 3) * 0.12, 0.205, Math.floor(i / 3) * 0.07 - 0.02]}>
-          <cylinderGeometry args={[0.03, 0.03, 0.01, 12]} />
-          <meshStandardMaterial color="#c9a24a" metalness={0.8} roughness={0.3} />
-        </mesh>
-      ))}
+      {/* wax seal where the flap meets */}
+      <mesh castShadow position={[0, 0.05, 0]}>
+        <cylinderGeometry args={[0.055, 0.06, 0.02, 24]} />
+        <meshStandardMaterial color="#a8524a" roughness={0.45} metalness={0.1} />
+      </mesh>
     </group>
   );
 }
@@ -959,8 +999,8 @@ export default function DeskScene({
       <Item id="words" label="VI · In Her Words" sub="the newspapers · open" position={[-3.2, 0, 0.9]} labelOffset={[0, 0.7, 0]} ring={0.95} {...common}>
         <Newspapers />
       </Item>
-      <Item id="contact" label="VII · Write to the DG" sub="telephone · open" position={[2.9, 0, 0.5]} labelOffset={[0, 0.8, 0]} ring={0.65} {...common}>
-        <Telephone />
+      <Item id="contact" label="VII · Write to the DG" sub="the envelope · open" position={[2.9, 0, 0.5]} labelOffset={[0, 0.5, 0]} ring={0.65} {...common}>
+        <Envelope />
       </Item>
 
       <ContactShadows position={[0, 0.01, 0]} opacity={0.35} scale={12} blur={2.4} far={2} color="#4a2e2a" />
